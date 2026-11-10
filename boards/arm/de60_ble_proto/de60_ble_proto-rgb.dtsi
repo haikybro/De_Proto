@@ -1,0 +1,54 @@
+/*
+ * RGB matrix metadata for the 26-LED underglow strip on DE60 BLE Proto.
+ * Coordinates follow the DE60 60% perimeter layout used by DE60 BLE Rev1.
+ */
+
+#include <dt-bindings/zmk/rgb.h>
+#include <dt-bindings/zmk/rgb_colors.h>
+
+/ {
+    rgb_transform: rgb_transform {
+        compatible = "zmk,rgb-matrix-transform";
+
+        map = <
+            0 1 2 3 4 5 6 7 8 9
+            10 11
+            12 13
+            14 15 16 17 18 19 20 21 22 23 24 25
+        >;
+
+        led-positions =
+            <1000 500>, <1100 500>, <1200 500>, <1300 500>, <1400 500>,
+            <1400 350>, <1400 150>,
+            <1350 0>, <1200 0>, <1050 0>, <900 0>, <750 0>, <600 0>,
+            <450 0>, <300 0>, <150 0>, <0 0>,
+            <0 150>, <0 350>,
+            <0 500>, <150 500>, <300 500>, <450 500>, <600 500>,
+            <750 500>, <900 500>;
+    };
+
+    underglow_layer: underglow_layer {
+        compatible = "zmk,underglow-layer";
+        transform = <&rgb_transform>;
+
+        base_layer_rgb {
+            layer-id = <0>;
+            bindings = <
+                &ug ___ &ug ___ &ug ___ &ug ___ &ug ___ &ug ___ &ug ___ &ug ___ &ug ___ &ug ___
+                &ug ___ &ug ___
+                &ug ___ &ug ___
+                &ug ___ &ug ___ &ug ___ &ug ___ &ug ___ &ug ___ &ug ___ &ug ___ &ug ___ &ug ___ &ug ___ &ug ___
+            >;
+        };
+
+        macro_layer_rgb {
+            layer-id = <1>;
+            bindings = <
+                &ug BLUE &ug BLUE &ug BLUE &ug BLUE &ug BLUE &ug BLUE &ug BLUE &ug BLUE &ug BLUE &ug BLUE
+                &ug BLUE &ug BLUE
+                &ug BLUE &ug BLUE
+                &ug BLUE &ug BLUE &ug BLUE &ug BLUE &ug BLUE &ug BLUE &ug BLUE &ug BLUE &ug BLUE &ug BLUE &ug BLUE &ug BLUE
+            >;
+        };
+    };
+};

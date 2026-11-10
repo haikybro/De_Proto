@@ -10,6 +10,7 @@
 #include <physical_layouts.dtsi>
 #include <dt-bindings/led/led.h>
 #include "de60_ble_proto-pinctrl.dtsi"
+#include "de60_ble_proto-rgb.dtsi"
 
 / {
     model = "de60_ble_proto";
