@@ -1,0 +1,128 @@
+#include "../common.keymap"
+
+/*
+ * Default ANSI 60% layout for the DE60 BLE Proto, based on the supplied
+ * Tofu60 BLE v3 ANSI 7u keymap. The board matrix has 62 physical positions.
+ */
+
+/ {
+    behaviors {
+        macro_corp: macro_corp {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            display-name = "Corp Login";
+            bindings = <&macro_tap &kp C &kp O &kp R &kp P &kp BSLH &kp K &kp Y &kp N9 &kp N1 &kp DOT &kp H &kp A &kp I>;
+        };
+
+        macro_pass91: macro_pass91 {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            display-name = "Password 91";
+            bindings = <&macro_tap &kp LS(H) &kp A &kp I &kp K &kp Y &kp N9 &kp N1 &kp N &kp A &kp LS(N1)>;
+        };
+
+        macro_pass90: macro_pass90 {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            display-name = "Password 90";
+            bindings = <&macro_tap &kp LS(H) &kp A &kp I &kp K &kp Y &kp N9 &kp N9 &kp N0 &kp N &kp A &kp LS(N1)>;
+        };
+
+        macro_username: macro_username {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            display-name = "Username";
+            bindings = <&macro_tap &kp K &kp Y &kp N9 &kp N1 &kp DOT &kp H &kp A &kp I>;
+        };
+
+        macro_genid: macro_genid {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            display-name = "Generate ID";
+            bindings = <&macro_tap &kp N1 &kp N5 &kp N7 &kp N9 &kp N8 &kp N6 &kp N7 &kp N5>;
+        };
+
+        macro_passlogin: macro_passlogin {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            display-name = "Login PIN";
+            bindings = <&macro_tap &kp N2 &kp N9 &kp N0 &kp N8 &kp N9 &kp N1>;
+        };
+
+        open_nx: open_nx {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            display-name = "Open NX";
+            tap-ms = <10>;
+            wait-ms = <10>;
+            bindings = <&macro_wait_time 500>,
+                       <&macro_tap &kp LGUI>,
+                       <&macro_wait_time 10>,
+                       <&macro_tap &kp N>,
+                       <&macro_wait_time 500>,
+                       <&macro_tap &kp X>,
+                       <&macro_tap &kp RET>;
+        };
+
+        macro_code: macro_code {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            display-name = "Open VS Code";
+            tap-ms = <10>;
+            wait-ms = <10>;
+            bindings = <&macro_wait_time 500>,
+                       <&macro_tap &kp LGUI>,
+                       <&macro_wait_time 10>,
+                       <&macro_tap &kp C &kp O &kp D>,
+                       <&macro_wait_time 500>,
+                       <&macro_tap &kp E>,
+                       <&macro_tap &kp RET>;
+        };
+
+        macro_name: macro_name {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            display-name = "Type Name";
+            tap-ms = <20>;
+            wait-ms = <20>;
+            bindings = <&macro_tap &kp LS(N) &kp G &kp U &kp Y &kp E &kp E &kp N &kp X
+                                   &kp SPACE
+                                   &kp LS(H) &kp A &kp I &kp R
+                                   &kp SPACE
+                                   &kp LS(K) &kp Y &kp R>;
+        };
+    };
+
+    keymap {
+        compatible = "zmk,keymap";
+
+        default_layer {
+            label = "ANSI 7u";
+            bindings = <
+                &gresc     &kp N1   &kp N2  &kp N3  &kp N4  &kp N5  &kp N6  &kp N7  &kp N8  &kp N9  &kp N0  &kp MINUS &kp EQUAL &kp BSLH  &kp DEL
+                &kp TAB    &kp Q    &kp W   &kp E   &kp R   &kp T   &kp Y   &kp U   &kp I   &kp O   &kp P   &kp LBKT  &kp RBKT  &kp BSPC
+                &kp LCTRL  &kp A    &kp S   &kp D   &kp F   &kp G   &kp H   &kp J   &kp K   &kp L   &kp SEMI &kp SQT             &kp RET
+                &kp LSHFT           &kp Z   &kp X   &kp C   &kp V   &kp B   &kp N   &kp M   &kp COMMA &kp DOT &kp FSLH &kp RSHIFT &mo 1
+                &trans     &kp LGUI &kp LALT                         &kp SPACE                                  &kp RALT &kp LC(LA(DEL)) &trans
+            >;
+        };
+
+        layer_1 {
+            label = "Macros and Controls";
+            bindings = <
+                &trans      &kp F1   &kp F2   &kp F3   &kp F4   &kp F5   &kp F6   &kp F7   &kp F8   &kp F9   &kp F10  &kp F11   &kp F12   &DE_BLD   &kp INS
+                &trans      &trans   &kp UP   &DE_USB  &DE_BT1  &DE_BT2  &DE_BT3  &trans   &trans   &trans   &kp UP   &kp PG_UP &kp PG_DN &macro_genid
+                &trans      &kp LEFT &kp DOWN &kp RIGHT &trans  &trans   &trans   &trans   &trans   &kp LEFT &kp DOWN &kp RIGHT           &macro_name
+                &macro_username &DE_SLP &trans &macro_code &bt BT_CLR_ALL &trans &open_nx &trans &trans &trans &kp LG(L) &macro_passlogin &trans
+                &trans      &macro_pass91 &macro_pass90                         &trans                                  &kp CLCK &macro_corp
+            >;
+        };
+
+        layer_2 { status = "reserved"; };
+        layer_3 { status = "reserved"; };
+        layer_4 { status = "reserved"; };
+        layer_5 { status = "reserved"; };
+        layer_6 { status = "reserved"; };
+        layer_7 { status = "reserved"; };
+    };
+};
