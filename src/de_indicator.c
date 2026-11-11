@@ -152,17 +152,12 @@ void de_indicator_show_layer_on_demand(void) {
 
 static void ble_active_profile_update(void) {
     uint8_t profile_index = zmk_ble_active_profile_index();
-    if (profile_index > 3)
+    if (profile_index >= 3)
         return;
     indicator_state.active_device = profile_index;
-    if (zmk_ble_active_profile_is_connected()) {
-        indicator_state.connection = 2;
-        indicator_state.flash_times = 3 * 4;
-        //} else if (zmk_ble_active_profile_is_open()) {
-    } else {
-        indicator_state.connection = 1;
-        indicator_state.flash_times = 15 * 4;
-    }
+    /* Keep a unique color visible for an unconnected selected slot. */
+    indicator_state.connection = zmk_ble_active_profile_is_connected() ? 2 : 1;
+    indicator_state.flash_times = indicator_state.connection == 2 ? 3 * 4 : 0;
     LOG_DBG("Device_BT%d, Connection State: %d", indicator_state.active_device + 1,
             indicator_state.connection);
     return;
@@ -249,8 +244,14 @@ void led_process_thread(void *p1, void *p2, void *p3) {
 
         // Priority 1: Show connection status
         if (indicator_state.connection > 0) {
-            static uint8_t profile_color_bits[3] = {0b011, 0b110, 0b101};
+            /* Slot 1 = green, slot 2 = purple, slot 3 = yellow. */
+            static uint8_t profile_color_bits[3] = {0b010, 0b101, 0b011};
             if (indicator_state.active_device >= 3) {
+                continue;
+            }
+
+            if (indicator_state.connection == 1) {
+                set_indicator_color(profile_color_bits[indicator_state.active_device]);
                 continue;
             }
 
@@ -265,17 +266,10 @@ void led_process_thread(void *p1, void *p2, void *p3) {
                     set_indicator_color(color_bits);
                     break;
                 case 2:
-                    if (indicator_state.connection != 2)
-                        set_indicator_color(0);
+                    set_indicator_color(0);
                     break;
                 case 3:
-                    if (indicator_state.connection != 2) {
-                        bt_addr_le_t *addr = zmk_ble_active_profile_addr();
-                        if (bt_addr_le_eq(addr, BT_ADDR_LE_ANY))
-                            set_indicator_color(0b001); // red color
-                        else
-                            set_indicator_color(0b100); // blue color
-                    }
+                    set_indicator_color(0);
                     break;
                 }
                 if (indicator_state.flash_times == 0)

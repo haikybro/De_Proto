@@ -6,93 +6,6 @@
  */
 
 / {
-    behaviors {
-        macro_corp: macro_corp {
-            compatible = "zmk,behavior-macro";
-            #binding-cells = <0>;
-            display-name = "Corp Login";
-            bindings = <&macro_tap &kp C &kp O &kp R &kp P &kp BSLH &kp K &kp Y &kp N9 &kp N1 &kp DOT &kp H &kp A &kp I>;
-        };
-
-        macro_pass91: macro_pass91 {
-            compatible = "zmk,behavior-macro";
-            #binding-cells = <0>;
-            display-name = "Password 91";
-            bindings = <&macro_tap &kp LS(H) &kp A &kp I &kp K &kp Y &kp N9 &kp N1 &kp N &kp A &kp LS(N1)>;
-        };
-
-        macro_pass90: macro_pass90 {
-            compatible = "zmk,behavior-macro";
-            #binding-cells = <0>;
-            display-name = "Password 90";
-            bindings = <&macro_tap &kp LS(H) &kp A &kp I &kp K &kp Y &kp N9 &kp N9 &kp N0 &kp N &kp A &kp LS(N1)>;
-        };
-
-        macro_username: macro_username {
-            compatible = "zmk,behavior-macro";
-            #binding-cells = <0>;
-            display-name = "Username";
-            bindings = <&macro_tap &kp K &kp Y &kp N9 &kp N1 &kp DOT &kp H &kp A &kp I>;
-        };
-
-        macro_genid: macro_genid {
-            compatible = "zmk,behavior-macro";
-            #binding-cells = <0>;
-            display-name = "Generate ID";
-            bindings = <&macro_tap &kp N1 &kp N5 &kp N7 &kp N9 &kp N8 &kp N6 &kp N7 &kp N5>;
-        };
-
-        macro_passlogin: macro_passlogin {
-            compatible = "zmk,behavior-macro";
-            #binding-cells = <0>;
-            display-name = "Login PIN";
-            bindings = <&macro_tap &kp N2 &kp N9 &kp N0 &kp N8 &kp N9 &kp N1>;
-        };
-
-        open_nx: open_nx {
-            compatible = "zmk,behavior-macro";
-            #binding-cells = <0>;
-            display-name = "Open NX";
-            tap-ms = <10>;
-            wait-ms = <10>;
-            bindings = <&macro_wait_time 500>,
-                       <&macro_tap &kp LGUI>,
-                       <&macro_wait_time 10>,
-                       <&macro_tap &kp N>,
-                       <&macro_wait_time 500>,
-                       <&macro_tap &kp X>,
-                       <&macro_tap &kp RET>;
-        };
-
-        macro_code: macro_code {
-            compatible = "zmk,behavior-macro";
-            #binding-cells = <0>;
-            display-name = "Open VS Code";
-            tap-ms = <10>;
-            wait-ms = <10>;
-            bindings = <&macro_wait_time 500>,
-                       <&macro_tap &kp LGUI>,
-                       <&macro_wait_time 10>,
-                       <&macro_tap &kp C &kp O &kp D>,
-                       <&macro_wait_time 500>,
-                       <&macro_tap &kp E>,
-                       <&macro_tap &kp RET>;
-        };
-
-        macro_name: macro_name {
-            compatible = "zmk,behavior-macro";
-            #binding-cells = <0>;
-            display-name = "Type Name";
-            tap-ms = <20>;
-            wait-ms = <20>;
-            bindings = <&macro_tap &kp LS(N) &kp G &kp U &kp Y &kp E &kp E &kp N &kp X
-                                   &kp SPACE
-                                   &kp LS(H) &kp A &kp I &kp R
-                                   &kp SPACE
-                                   &kp LS(K) &kp Y &kp R>;
-        };
-    };
-
     keymap {
         compatible = "zmk,keymap";
 
@@ -114,7 +27,7 @@
                 &trans      &trans   &kp UP   &DE_USB  &DE_BT1  &DE_BT2  &DE_BT3  &trans   &trans   &trans   &kp UP   &kp PG_UP &kp PG_DN &macro_genid
                 &trans      &kp LEFT &kp DOWN &kp RIGHT &trans  &trans   &trans   &trans   &trans   &kp LEFT &kp DOWN &kp RIGHT           &macro_name
                 &macro_username &DE_SLP &trans &macro_code &bt BT_CLR_ALL &trans &open_nx &trans &trans &trans &kp LG(L) &macro_passlogin &trans
-                &trans      &macro_pass91 &macro_pass90                         &trans                                  &kp CLCK &macro_corp
+                &trans      &macro_pass91 &macro_pass90                         &trans               &trans            &kp CLCK &macro_corp
             >;
         };
 

@@ -25,7 +25,7 @@ config BT_DIS_MANUF
 	default "DEKB"
 
 config BT_DIS_MODEL
-	default "DE60 BLE REV1"
+    default "HKB_Rev1"
 
 endif # BT
 
