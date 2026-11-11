@@ -361,6 +361,20 @@ static inline void led_rainbow_cycle(int64_t elapsed, int32_t cycle_ms) {
     led_set(colors[index]);
 }
 
+static uint8_t ble_profile_color(void) {
+    static const uint8_t colors[] = {
+        LED_GREEN,   // Slot 1
+        LED_MAGENTA, // Slot 2
+        LED_YELLOW,  // Slot 3
+    };
+
+    if (ctx.data.ble_profile_index >= ARRAY_SIZE(colors)) {
+        return LED_GREEN;
+    }
+
+    return colors[ctx.data.ble_profile_index];
+}
+
 // =====================
 // TRANSIENT LIFECYCLE
 // =====================
@@ -476,6 +490,10 @@ static de_indicator_state_t resolve_state_raw(int64_t now) {
 
         if (ctx.flags.ble_is_connected) {
             return DE_INDICATOR_STATE_BLE_CONNECTED;
+        }
+
+        if (!ctx.data.ble_profile_connected) {
+            return DE_INDICATOR_STATE_BLE_PROFILE_SELECTED;
         }
     }
     
@@ -626,7 +644,11 @@ static void render_indicator_state(de_indicator_state_t state, int64_t now) {
         break;
 
     case DE_INDICATOR_STATE_BLE_SWITCH_EVENT:
-        led_flash_double(LED_BLUE, now, ctx.timers.ble_switch_start_ts);
+        led_flash_double(ble_profile_color(), now, ctx.timers.ble_switch_start_ts);
+        break;
+
+    case DE_INDICATOR_STATE_BLE_PROFILE_SELECTED:
+        led_set(ble_profile_color());
         break;
 
     case DE_INDICATOR_STATE_BOOT: 
@@ -638,11 +660,11 @@ static void render_indicator_state(de_indicator_state_t state, int64_t now) {
         break;
 
     case DE_INDICATOR_STATE_BLE_PAIRING:
-        led_blink_periodic(LED_BLUE, now, DE_INDICATOR_BLINK_FAST_MS);
+        led_blink_periodic(ble_profile_color(), now, DE_INDICATOR_BLINK_FAST_MS);
         break;
 
     case DE_INDICATOR_STATE_BLE_CONNECTING:
-        led_blink_periodic(LED_BLUE, now, DE_INDICATOR_BLINK_SLOW_MS);
+        led_blink_periodic(ble_profile_color(), now, DE_INDICATOR_BLINK_SLOW_MS);
         break;
 
     case DE_INDICATOR_STATE_BLE_CONNECTED:
@@ -851,18 +873,22 @@ static int de_indicator_ble_profile_listener(const zmk_event_t *eh) {
 
     // Compare current active profile index with last known index to detect profile switch
     uint8_t current_profile_index = zmk_ble_active_profile_index();
+    ctx.data.ble_profile_index = current_profile_index;
+    ctx.data.ble_profile_connected = zmk_ble_active_profile_is_connected();
     if (current_profile_index != (uint8_t)last_profile_index) {
         de_indicator_trigger_ble_switch();
         last_profile_index = (int8_t)current_profile_index;
     }
 
-    if (zmk_ble_active_profile_is_connected()) {
+    if (ctx.data.ble_profile_connected) {
+        ctx.data.ble_profile_paired = true;
         de_indicator_ble_connected();
         return ZMK_EV_EVENT_BUBBLE;
     }
 
     bt_addr_le_t *addr = zmk_ble_active_profile_addr();
     bool ble_profile_paired = (addr != NULL) && !bt_addr_le_eq(addr, BT_ADDR_LE_ANY);
+    ctx.data.ble_profile_paired = ble_profile_paired;
 
     if (ble_profile_paired) {
         de_indicator_ble_connecting();

@@ -5,10 +5,27 @@ include:
     snippet: studio-rpc-usb-uart
     artifact-name: Firmware_Proto
 
+  # Flash each reset image once to clear the old saved Bluetooth name/keymap,
+  # then flash the matching regular firmware image.
+  - board: de60_ble_proto
+    snippet: studio-rpc-usb-uart
+    cmake-args: -DCONFIG_ZMK_SETTINGS_RESET_ON_START=y
+    artifact-name: Firmware_Proto_Settings_Reset
+
   - board: de60_ble_rev1_adc
     snippet: studio-rpc-usb-uart
     artifact-name: Firmware_Rev1_ADC
 
+  - board: de60_ble_rev1_adc
+    snippet: studio-rpc-usb-uart
+    cmake-args: -DCONFIG_ZMK_SETTINGS_RESET_ON_START=y
+    artifact-name: Firmware_Rev1_ADC_Settings_Reset
+
   - board: de60_ble_rev1_fuelgauge
     snippet: studio-rpc-usb-uart
     artifact-name: Firmware_Rev1
+
+  - board: de60_ble_rev1_fuelgauge
+    snippet: studio-rpc-usb-uart
+    cmake-args: -DCONFIG_ZMK_SETTINGS_RESET_ON_START=y
+    artifact-name: Firmware_Rev1_Settings_Reset
