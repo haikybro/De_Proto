@@ -3,7 +3,7 @@
 / {
 
     chosen {
-        zmk,physical-layout = &white_all;
+        zmk,physical-layout = &white_tsangan_split_bs_rshift;
     };
 
     white_all: white_all {
