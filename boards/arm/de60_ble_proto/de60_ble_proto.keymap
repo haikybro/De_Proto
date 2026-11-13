@@ -27,7 +27,7 @@
                 &trans      &trans   &kp UP   &DE_USB  &DE_BT1  &DE_BT2  &DE_BT3  &trans   &trans   &trans   &kp UP   &kp PG_UP &kp PG_DN &macro_genid
                 &trans      &kp LEFT &kp DOWN &kp RIGHT &trans  &trans   &trans   &trans   &trans   &kp LEFT &kp DOWN &kp RIGHT           &macro_name
                 &macro_username &DE_SLP &trans &macro_code &bt BT_CLR_ALL &trans &open_nx &trans &trans &trans &kp LG(L) &macro_passlogin &trans
-                &trans      &macro_pass91 &macro_pass90                         &trans               &trans            &kp CLCK &macro_corp
+                &trans      &macro_pass91 &macro_pass90                         &trans                           &kp CLCK &macro_corp &trans
             >;
         };
 
